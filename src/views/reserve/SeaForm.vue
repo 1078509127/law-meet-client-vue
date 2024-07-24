@@ -30,6 +30,7 @@
     </div>
 </template>
 <script>
+    import request from '@/utils/request'
     export default {
         data() {
             return {
@@ -114,20 +115,27 @@
                     pageNum: this.page.pageNum,
                     pageSize: this.page.pageSize
                 }
+                request.get('/reserve/reserveInfo').then(res => {
+                    console.log(res)
+                })
+
                 this.tableList = this.tableData
                 this.page.total = this.tableData.length
             },
             handlePageChange(currentPage) {
                 this.page.pageNum = currentPage
+                console.log('currentPage',currentPage)
                 // 在此刷新数据
             },
             handleSizeChange(pageSize) {
                 this.page.pageSize = pageSize
+                console.log('pageSize',pageSize)
                 // 在此刷新数据
             },
             checked(data){
                 console.log(data)
             },
+
             cellStyle(row, column, rowIndex, columnIndex) {
                 let cellStyles = 'textAlign: center;';
                 if (row.columnIndex == 3) {

@@ -50,6 +50,7 @@
 </template>
 
 <script>
+    import request from '@/utils/request'
     export default {
         data() {
             return {
@@ -60,10 +61,11 @@
                     place:"",
                     startTime: '',
                     endTime: '',
-                    file: '',
+                    //file: '',
                     type: [],
                     desc: ''
                 },
+                file: '',
                 rules: {
                     name: [
                         { required: true, message: '请输入姓名', trigger: 'blur' },
@@ -98,7 +100,13 @@
             onSubmit(formName) {
                 this.$refs[formName].validate((valid) => {
                     if (valid) {
+                        const formData = new FormData(); 
+                        formData.append('file',this.file);
+                        formData.append('wxReserveInfo',this.form);
                         console.log('submit!',this.form);
+                        request.post('',formData).then(res =>{
+                            console.log(res)
+                        })
                     } else {
                         console.log('error submit!!');
                         return false;
@@ -111,7 +119,7 @@
             /* 上传图片*/
             handleChange(file, fileList) {
                 console.log(file, fileList);
-                this.form.file = file
+                this.file = file
             },
         }
     }

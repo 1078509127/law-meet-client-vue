@@ -4,14 +4,15 @@ import { getToken } from './auth'
 
 // create an axios instance
 const service = axios.create({
-    baseURL: process.env.NODE_ENV, // api 的 base_url
+    baseURL: '/client', //process.env.NODE_ENV api的base_url  
     timeout: 5000 // request timeout
 })
 // request interceptor
 service.interceptors.request.use(
     config => {
+      console.log(process.env.NODE_ENV)
         if (getToken()) {
-          config.headers['Authorization'] = getToken()
+          config.headers['Authorization'] = 'Bearer '+getToken()
         }
         return config
     },
@@ -25,9 +26,8 @@ service.interceptors.request.use(
 // response interceptor
 service.interceptors.response.use(
   response => {
-    const res = response.data
-
-    if (res.errno !== 200) {
+    //const res = response.data
+    if (response.status !== 200) {
       MessageBox.alert('系统未登录，请重新登录', '错误', {
         confirmButtonText: '确定',
         type: 'error'
